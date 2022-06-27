@@ -7,6 +7,7 @@ import (
 	"image/png"
 	"log"
 	"os"
+	"os/exec"
 	"strconv"
 )
 
@@ -92,6 +93,7 @@ func Snapshot() {
   @param key  -- Custom type Keylayout. This param contains keybinds for the application such as the quit and capture keybind which are just strings in the type.
 */
 func Key_press_listener(key Keylayout) {
+	exec.Command("stty", "-F", "/dev/tty", "cbreak", "min", "1").Run()
 	ch := make(chan string)
 	go func(ch chan string) {
 		var b = make([]byte, 1)
