@@ -1,9 +1,11 @@
 package collect
 
 import (
+	"fmt"
 	"io/fs"
 	"io/ioutil"
 	"log"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -56,8 +58,9 @@ func LastScreenshotNumber(path string) (int, error) {
 	var files []fs.FileInfo = ReadDir(dir, false)
 	var screenshotNumber string = "0" // holds string value of the last reported screenshot number.
 	for _, file := range files {
-		if strings.Contains(file.Name(), "_") {
-			var s []string = strings.Split(file.Name(), "_")
+		if strings.Contains(file.Name(), "_GoScreen") {
+			//TODO type safety for the s variable.  I.e. what if the s[0] isn't
+			var s []string = strings.Split(file.Name(), "_GoScreen")
 
 			//Type conversion to compare strings by value.
 			currNum, err := strconv.Atoi(s[0])
@@ -79,4 +82,9 @@ func LastScreenshotNumber(path string) (int, error) {
 
 	//convert string to int and return it.
 	return strconv.Atoi(screenshotNumber)
+}
+
+func NumberArgs() {
+	fmt.Println(len(os.Args))
+
 }

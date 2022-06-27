@@ -1,12 +1,20 @@
 package capture
 
 import (
+	"GoScreen/pkg/collect"
 	"fmt"
 	"github.com/kbinani/screenshot"
 	"image/png"
+	"log"
 	"os"
 	"strconv"
 )
+
+// Keylayout -- used for creating keybinds in the application, used inside the Key_press_listener...
+type Keylayout struct {
+	Capture string
+	Quit    string
+}
 
 /*
   Takes an integer and pads 0's to the front of the int, returns a string
@@ -64,4 +72,43 @@ func TakeScreenshot(screenshotNumber int, monitor int) {
 		fmt.Printf("#%d : %v \"%s\"\n", screenshotNumber, bounds, fileName)
 	}
 
+}
+
+//High level function which takes a screenshot with default parameters such as screenshot number etc. . .
+func Snapshot() {
+	var curr_screenshot int
+	var err error
+	curr_screenshot, err = collect.LastScreenshotNumber("./")
+	if err != nil {
+		log.Fatal(err)
+	}
+	var screenshotName int = curr_screenshot + 1
+	fmt.Println("")
+	TakeScreenshot(screenshotName, 0)
+}
+
+/*
+  A function which when called pauses the terminal to await a key press.
+  @param key  -- Custom type Keylayout. This param contains keybinds for the application such as the quit and capture keybind which are just strings in the type.
+*/
+func Key_press_listener(key Keylayout) {
+	ch := make(chan string)
+	go func(ch chan string) {
+		var b = make([]byte, 1)
+		for {
+			os.Stdin.Read(b)
+			ch <- string(b)
+		}
+	}(ch)
+
+	for {
+		stdin, _ := <-ch
+		if stdin == key.Capture {
+			Snapshot()
+		} else if stdin == key.Quit {
+			//cleanup  bfor exit would go here
+			break
+		}
+
+	}
 }
