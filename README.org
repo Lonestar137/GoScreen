@@ -1,0 +1,22 @@
+#+title: Readme
+
+
+* About
+The purpose of this project is to launch a program which can detect a keypress and respond to that keypress by taking a screenshot of a monitor.  The keybinds and monitor(s) captured can be change via commandline arguments.
+
+Future implementations will have a tray program with a small gui for easier post runtime configuration.
+
+* Getting started
+To get started you can download one of the released binaries for your platform.
+
+1. Install the binary to a location on your computers PATH or just run the binary manually.
+2. Run the program with the ~--help~ flag to show a list of options.  I.e. ~GoScreen --help~
+** Changing keybinds
+Example: Changing capture key to `k` and quit to `a` keys.
+~GoScreen k a~
+
+* Compiling from source
+1. Make sure Golang is installed.
+2. Clone the repository down to a directory of your choosing.
+3. Run: ~Go run main.go~ from the project root to run the program.
+4. From this point, you can treat the project as any other Golang project. I.e Go install will build the project and put it to your path.
